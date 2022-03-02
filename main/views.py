@@ -1,8 +1,9 @@
+from base64 import b64encode
 from django.utils import timezone
 from main.models import Author, Lecture, PointsPrice, Subject, User, UserLecture, Video
 from .utils import Util
 from rest_framework.permissions import IsAuthenticated
-from main.serializers import EmailValidateSerializer, ForgotPasswordSerializer, RegistrationSerializer, ResetPasswrodSerializer, TransferSerializer, VideoSerializer, create_code
+from main.serializers import EmailValidateSerializer, ForgotPasswordSerializer, RegistrationSerializer, ResetPasswrodSerializer, VideoSerializer, create_code
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -35,7 +36,8 @@ def registraion_view(request):
             data['response'] = 'تم تسجيل المستخدم بنجاح.'
             data['email'] = user.email
             data['username'] = user.username
-            Util.email_verifier(user)
+            print('---------------------------------')
+            print(Util.email_verifier(user))
             return Response(data,status = status.HTTP_201_CREATED)
         else:
             data = serializer.errors
@@ -197,21 +199,6 @@ def PurchaseLectureView(request):
     }
     return Response(data,status=status.HTTP_202_ACCEPTED)
 
-@api_view(["POST",])
-@permission_classes([IsAuthenticated])
-def TransferView(request):
-    user = request.user
-    serializer = TransferSerializer(data = request.data)
-    if serializer.is_valid():
-        serializer.validated_data['points'] = int(serializer.validated_data['amount'] / PointsPrice.objects.latest('created').point_price)
-        serializer.validated_data['user'] = user
-        serializer.save()
-        data = {
-            'Response': 'تمت عملية التحويل بنجاح. يرجى الانتظار حتى يقوم احد المشرفين بتاكيد عملية التحويل.',
-        }
-        return Response(data,status=status.HTTP_200_OK)
-    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
 @api_view(['GET',])
 @permission_classes([IsAuthenticated])
 def GetPoints(request):
@@ -250,3 +237,14 @@ def VideoEmbedHtmlPage(request,id):
         raise Http404("الفيديو غير موجود")
     html = f"<html><body>{video.embed}</body></html>"
     return HttpResponse(html)
+
+@api_view(['POST',])
+@permission_classes([IsAuthenticated])
+def AuthorView(request):
+    author = Author.objects.get(id = request.data['id'])
+    data = {
+        'name': author.name,
+        'description': author.description,
+        'image': b64encode(author.image.read())
+    }
+    return Response(data,status = status.HTTP_200_OK)

@@ -2,8 +2,7 @@ from django.contrib.auth.models import update_last_login
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
-from rest_framework_simplejwt import authentication
-from main.models import Subject, User, Video, Transfer
+from main.models import Author, Subject, User, Video
 import string,secrets
 from django.db.models import Q
 from drf_extra_fields.fields import Base64ImageField
@@ -147,8 +146,15 @@ class ResetPasswrodSerializer(serializers.Serializer):
             raise serializers.ValidationError({'password': is_strong['report']})
         return data
 
-class TransferSerializer(serializers.ModelSerializer):
+
+class AuthorsSerializer(serializers.ModelSerializer):
     image = Base64ImageField(max_length=None,represent_in_base64 = True)
     class Meta:
-        model = Transfer
-        fields = ['receipt_number','full_name','amount','phone','image']
+        model = Author
+        fields = ['id','name','image']
+
+class AuthorSerializer(serializers.ModelSerializer):
+    image = Base64ImageField(max_length=None,represent_in_base64 = True)
+    class Meta:
+        model = Author
+        fields = ['name','description','image']

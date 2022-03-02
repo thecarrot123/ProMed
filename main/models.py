@@ -14,11 +14,18 @@ from django.core.exceptions import ValidationError
 
 
 class Author(models.Model):
+    def validate_image(fieldfile_obj):
+        filesize = fieldfile_obj.file.size
+        megabyte_limit = 5.0
+        if filesize > megabyte_limit*1024*1024:
+            raise ValidationError("حجم الصورة يجب ان تكون اصغر من %sMB" % str(megabyte_limit))
     name = models.CharField(max_length=100)
     total_points = models.IntegerField(default = 0)
     total_income = models.IntegerField(default = 0)
     extracted = models.IntegerField(default = 0)
     left = models.IntegerField(default = 0)
+    description = models.CharField(max_length=1000,default="")
+    image = models.ImageField(upload_to = "images/",validators=[validate_image],blank=True)
     #taxes = models.IntegerField(default = 0) #todo make it percent
     def __str__(self):
         return self.name
@@ -77,24 +84,6 @@ class UserLecture(models.Model):
     def __str__(self):
         return str(self.user) + ' ' + str(self.lecture)
 
-class Transfer(models.Model):
-    def validate_image(fieldfile_obj):
-        filesize = fieldfile_obj.file.size
-        megabyte_limit = 5.0
-        if filesize > megabyte_limit*1024*1024:
-            raise ValidationError("حجم الصورة يجب ان تكون اصغر من %sMB" % str(megabyte_limit))
-    user = models.ForeignKey(User,on_delete=CASCADE,null = True)
-    image = models.ImageField(upload_to = "images/",validators=[validate_image])
-    full_name = models.CharField(max_length=60)
-    phone = models.CharField("رقم الهاتف",max_length=60)
-    points = IntegerField("النقاط",null = True)
-    amount = IntegerField("قيمة الحوالي")
-    receipt_number = IntegerField("رقم الايصال",unique=True,error_messages={
-            'unique': ("تم ارسال رقم هذا الايصال مسبقاً."),
-        })
-    def __str__(self):
-        return str(self.user) + ' ' + str(self.amount)
-
 class PointsPrice(models.Model):
     created = models.DateTimeField(default=timezone.now)
     point_price = IntegerField(default=100)
@@ -110,9 +99,4 @@ class PointsPrice(models.Model):
 #     points = models.IntegerField()
 #     price = models.IntegerField()
 #     date = models.DateTimeField(default = timezone.now)
-
-# class Expanse(models.Modle):
-#     price = models.IntegerField()
-#     discription  = models.CharField(max_length = 300)
-#     date = models.DateTimeField(default=timezone.now)
 
