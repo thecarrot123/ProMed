@@ -44,8 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework.authtoken',
     'rest_framework',
-    'main',
+    'fcm_django',
     'main2',
+    'main',
 ]
 
 AUTH_USER_MODEL = 'main.User'
@@ -153,3 +154,11 @@ EMAIL_HOST_PASSWORD = '#AChEPT4Ang2%'
 from os.path import expanduser
 home = expanduser("~")
 
+from firebase_admin import initialize_app
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+FIREBASE_APP = initialize_app()
+
+FCM_DJANGO_SETTINGS = {
+    "APP_VERBOSE_NAME": "[string for AppConfig's verbose_name]",
+    "ONE_DEVICE_PER_USER": False,
+}
