@@ -1,7 +1,7 @@
 from main.viewsets import AuthorsViewSet, SubjectViewSet, CostumObtainAuthToken, SubjectViewSet, SubjectsNamesViewSet
 from django.urls import path
 from django.urls.conf import include
-from main.views import AuthorView, GetPoints, LecturesView, ForgotPasswordView, PurchaseLectureView, ResetPasswordView, LectureView, ShareAapp, VideoDetails, VideoView, registraion_view, verify_email, VideoEmbedHtmlPage
+from main.views import GetPoints, LecturesView, ForgotPasswordView, PurchaseLectureView, ResetPasswordView, LectureView, ShareAapp, VideoDetails, VideoView, registraion_view, verify_email, VideoEmbedHtmlPage
 from rest_framework import routers
 
 router = routers.DefaultRouter()
@@ -25,5 +25,4 @@ urlpatterns = [
     path('share/',ShareAapp),
     path('details/',VideoDetails),
     path('video_embed_html_page/<int:id>/',VideoEmbedHtmlPage),
-    path('author/',AuthorView),
 ]

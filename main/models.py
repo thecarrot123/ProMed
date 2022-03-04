@@ -11,8 +11,6 @@ from django.core.exceptions import ValidationError
 #     total_income = models.IntegerField()
 #     total_expanses = models.IntegerField()
 
-
-
 class Author(models.Model):
     def validate_image(fieldfile_obj):
         filesize = fieldfile_obj.file.size
@@ -50,9 +48,9 @@ class Subject(models.Model):
     lectures = models.ManyToManyField(Lecture)
     price = models.IntegerField(default=10000)
     icon = models.ImageField(help_text = 'image MUST be a square',upload_to = 'images/',blank=True)
+    year = models.IntegerField(default=0)
     def __str__(self):
         return self.name
-
 
 class Video(models.Model):
     lecture = models.ForeignKey(Lecture,on_delete=SET_NULL,null=True)
@@ -65,7 +63,6 @@ class Video(models.Model):
     high = models.CharField(max_length=300,blank=True)
     def __str__(self):
         return self.code_name
-
 
 class User(AbstractUser):
     email = models.EmailField("البريد الاكتروني", unique = True)

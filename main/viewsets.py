@@ -2,12 +2,10 @@ from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from ProMed.settings import LAST_VERSION, DOWNLOAD_LINK
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenViewBase
-from main.models import Author, Subject, User, Video
+from main.models import Author, Subject, User
 from rest_framework import status, viewsets
-from .serializers import AuthorsSerializer, CostumTokenObtainPairSerializer, EmailValidateSerializer, SubjectSerializer, SubjectsNamesSerializer, UserSerializer, VideoSerializer
-from rest_framework.parsers import JSONParser, MultiPartParser
-from django.db.models import Q
+from .serializers import AuthorsSerializer, EmailValidateSerializer, SubjectSerializer, SubjectsNamesSerializer, UserSerializer, VideoSerializer
+
 
 class SubjectsNamesViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Subject.objects.all()

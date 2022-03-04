@@ -40,12 +40,10 @@ def strong_password(password):
             'report': 'يجب ان تستوفي كلمة السر شرطين من الشروط الاتية على الاقل: ان تحتوي على محرف صغير, محرف كبير, رقم, محرف خاص.'}
     return {'status': True}
 
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
@@ -86,7 +84,7 @@ class SubjectsNamesSerializer(serializers.ModelSerializer):
     icon = Base64ImageField(max_length=None,represent_in_base64 = True, read_only=True)
     class Meta:
         model = Subject
-        fields = ['id','name','author','icon']
+        fields = ['id','name','author','icon','year']
     
 class SubjectSerializer(serializers.ModelSerializer):
     image = Base64ImageField(max_length=None,represent_in_base64 = True, read_only=True)
@@ -146,15 +144,8 @@ class ResetPasswrodSerializer(serializers.Serializer):
             raise serializers.ValidationError({'password': is_strong['report']})
         return data
 
-
 class AuthorsSerializer(serializers.ModelSerializer):
     image = Base64ImageField(max_length=None,represent_in_base64 = True)
     class Meta:
         model = Author
-        fields = ['id','name','image']
-
-class AuthorSerializer(serializers.ModelSerializer):
-    image = Base64ImageField(max_length=None,represent_in_base64 = True)
-    class Meta:
-        model = Author
-        fields = ['name','description','image']
+        fields = ['id','name','description','image']

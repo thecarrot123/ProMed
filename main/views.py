@@ -1,6 +1,6 @@
 from base64 import b64encode
 from django.utils import timezone
-from main.models import Author, Lecture, PointsPrice, Subject, User, UserLecture, Video
+from main.models import Author, Lecture, Subject, User, UserLecture, Video
 from .utils import Util
 from rest_framework.permissions import IsAuthenticated
 from main.serializers import EmailValidateSerializer, ForgotPasswordSerializer, RegistrationSerializer, ResetPasswrodSerializer, VideoSerializer, create_code
@@ -237,14 +237,3 @@ def VideoEmbedHtmlPage(request,id):
         raise Http404("الفيديو غير موجود")
     html = f"<html><body>{video.embed}</body></html>"
     return HttpResponse(html)
-
-@api_view(['POST',])
-@permission_classes([IsAuthenticated])
-def AuthorView(request):
-    author = Author.objects.get(id = request.data['id'])
-    data = {
-        'name': author.name,
-        'description': author.description,
-        'image': b64encode(author.image.read())
-    }
-    return Response(data,status = status.HTTP_200_OK)
