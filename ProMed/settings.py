@@ -145,11 +145,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATIC_URL = 'static/'
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'alawirmalek@gmail.com'
-EMAIL_HOST_PASSWORD = '#AChEPT4Ang2%'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+DEFAULT_FROM_EMAIL = 'promed@promed.com'
 
 from os.path import expanduser
 home = expanduser("~")

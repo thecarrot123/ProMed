@@ -48,7 +48,7 @@ class Subject(models.Model):
     lectures = models.ManyToManyField(Lecture)
     price = models.IntegerField(default=10000)
     icon = models.ImageField(help_text = 'image MUST be a square',upload_to = 'images/',blank=True)
-    year = models.IntegerField(default=0)
+    year = models.IntegerField(default=1)
     def __str__(self):
         return self.name
 
