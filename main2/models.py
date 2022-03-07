@@ -13,6 +13,7 @@ class Library(models.Model):
 class LibraryTransfer(models.Model):
     user = models.ForeignKey(User, on_delete = CASCADE, null=True)
     amount = models.IntegerField("قيمة الحوالة")
+    points = models.IntegerField("النقاط",default=0)
     library = models.ForeignKey(Library,on_delete=CASCADE,null=True)
     library_fee = models.IntegerField(default = 0)
     def __str__(self):
@@ -21,6 +22,7 @@ class LibraryTransfer(models.Model):
 class AlharamTransfer(models.Model):
     user = models.ForeignKey(User, on_delete = CASCADE, null=True)
     amount = models.IntegerField("قيمة الحوالة")
+    points = models.IntegerField("النقاط",default=0)
     receipt_number = models.IntegerField("رقم الايصال", unique = True, error_messages={
             'unique': ("تم ارسال رقم هذا الايصال مسبقاً."),
         })
