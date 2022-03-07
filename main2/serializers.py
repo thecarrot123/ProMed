@@ -4,7 +4,7 @@ from main2.models import Library, Transfer
 class TransferFromAlharamSerializer(serializers.ModelSerializer):
     #image = Base64ImageField(max_length=None,represent_in_base64 = True)
     def validate(self, attrs):
-        data = super().validate(self,attrs)
+        data = super().validate(attrs)
         return data
     class Meta:
         model = Transfer
