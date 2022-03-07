@@ -180,10 +180,10 @@ LOGGING = {
             'class': 'logging.NullHandler',
         },
         'file': {
-            'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR,'general.log'),
             'formatter': 'standard',
+            'level': 'INFO',
         },
         'console': {
             'level': 'DEBUG',
