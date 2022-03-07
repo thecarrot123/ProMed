@@ -1,10 +1,9 @@
 from rest_framework import serializers
-from main2.models import Library, Transfer
+from main2.models import AlharamTransfer, Library, LibraryTransfer
 
 class TransferFromAlharamSerializer(serializers.ModelSerializer):
-    #image = Base64ImageField(max_length=None,represent_in_base64 = True)
     class Meta:
-        model = Transfer
+        model = AlharamTransfer
         fields = ['user','receipt_number','amount']
         extra_kwargs = {
             'receipt_number': {'required': True},
@@ -12,9 +11,8 @@ class TransferFromAlharamSerializer(serializers.ModelSerializer):
         }
 
 class TransferFromLibrarySerializer(serializers.ModelSerializer):
-    #image = Base64ImageField(max_length=None,represent_in_base64 = True)
     class Meta:
-        model = Transfer
+        model = LibraryTransfer
         fields = ['user','library','amount']
         extra_kwargs = {
             'library': {'required': True},

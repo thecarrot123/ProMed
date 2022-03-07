@@ -10,13 +10,18 @@ class Library(models.Model):
     def __str__(self):
         return str(self.name)
 
-class Transfer(models.Model):
-    user = models.ForeignKey(User,on_delete=CASCADE,null = True)
-    points = models.IntegerField("النقاط",null = True)
+class LibraryTransfer(models.Model):
+    user = models.ForeignKey(User, on_delete = CASCADE)
     amount = models.IntegerField("قيمة الحوالة")
     library = models.ForeignKey(Library,on_delete=CASCADE,null=True)
     library_fee = models.IntegerField(default = 0)
-    receipt_number = models.CharField("رقم الايصال",max_length=20, blank=True, error_messages={
+    def __str__(self):
+        return str(self.user) + ' ' + str(self.amount)
+
+class AlharamTransfer(models.Model):
+    user = models.ForeignKey(User, on_delete = CASCADE)
+    amount = models.IntegerField("قيمة الحوالة")
+    receipt_number = models.IntegerField("رقم الايصال", unique = True, error_messages={
             'unique': ("تم ارسال رقم هذا الايصال مسبقاً."),
         })
     def __str__(self):
