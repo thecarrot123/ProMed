@@ -5,8 +5,8 @@ class TransferFromAlharamSerializer(serializers.ModelSerializer):
     #image = Base64ImageField(max_length=None,represent_in_base64 = True)
     def validate(self, attrs):
         data = super().validate(attrs)
-        if(data['receipt_number'] != ""):
-            raise serializers.ValidationError(".الرجاء التاكد من صحة المعلومات")
+        if(data['receipt_number'] == ""):
+            raise serializers.ValidationError({"receipt_number": ".الرجاء التاكد من صحة المعلومات"})
         return data
     class Meta:
         model = Transfer
