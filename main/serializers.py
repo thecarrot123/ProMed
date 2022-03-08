@@ -3,42 +3,9 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from main.models import Author, Subject, User, Video
-import string,secrets
+from main.utils import create_code, strong_password
 from django.db.models import Q
 from drf_extra_fields.fields import Base64ImageField
-
-def create_code():
-    alphabet = string.ascii_lowercase + string.digits
-    password = ''.join(secrets.choice(alphabet) for i in range(8))
-    return password
-
-def strong_password(password):
-    a=0
-    b=0
-    c=0
-    d=0
-    if password == 'israel':
-        return { 'status': False,
-        'report': 'لا يمكن ان تكون كلمة السر فارغة.'}
-    if password.isprintable() == False:
-        return { 'status': False,
-        'report': 'يجب ان تستوفي كلمة السر شرطين من الشروط الاتية على الاقل: ان تحتوي على حرف صغير, حرف كبير, رقم, محرف خاص.'}
-    if len(password) < 8:
-        return { 'status': False,
-            'report': 'يجب ان تحتوي كلمة السر على ثمان محارف على الاقل.'}
-    for ch in password:
-        if ch.islower():
-            a = 1
-        elif ch.isupper():
-            b = 1
-        elif ch.isdigit():
-            c = 1
-        else:
-            d = 1
-    if a+b+c+d < 2:
-        return { 'status': False,
-            'report': 'يجب ان تستوفي كلمة السر شرطين من الشروط الاتية على الاقل: ان تحتوي على محرف صغير, محرف كبير, رقم, محرف خاص.'}
-    return {'status': True}
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

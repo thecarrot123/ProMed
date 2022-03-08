@@ -3,7 +3,8 @@ from django.utils import timezone
 from main.models import Author, Lecture, Subject, User, UserLecture, Video
 from .utils import Util
 from rest_framework.permissions import IsAuthenticated
-from main.serializers import EmailValidateSerializer, ForgotPasswordSerializer, RegistrationSerializer, ResetPasswrodSerializer, VideoSerializer, create_code
+from main.serializers import EmailValidateSerializer, ForgotPasswordSerializer, RegistrationSerializer, ResetPasswrodSerializer, VideoSerializer
+from main.utils import create_code
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -13,7 +14,6 @@ from datetime import timedelta
 from ProMed.settings import DOWNLOAD_LINK, LAST_VERSION
 from django.http import HttpResponse
 from django.http import Http404
-
 
 def get_owened(user):
     end_date = timezone.now()

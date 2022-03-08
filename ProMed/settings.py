@@ -25,11 +25,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'autzce-^t!1u4h63(!!g70lyim3dycg1aut$_e%fajpu6%ldqx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-LAST_VERSION = '0.5'
+LAST_VERSION = '0.6'
 DOWNLOAD_LINK = 'https://drive.google.com/file/d/13P1dCPVN0mjk4Mqq_yddEGWUrpKGXadL/view?usp=drivesdk'
 
 
