@@ -36,7 +36,7 @@ def registraion_view(request):
             data['response'] = 'تم تسجيل المستخدم بنجاح.'
             data['email'] = user.email
             data['username'] = user.username
-            
+            Util.email_verifier(user)
             return Response(data,status = status.HTTP_201_CREATED)
         else:
             data = serializer.errors
