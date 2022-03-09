@@ -6,7 +6,7 @@ import string,secrets
 class Util:
     @staticmethod
     def send_email(data):
-        return send_mail(subject=data['subject'],message=data['body'],recipient_list=[data['email'],],fail_silently=False,from_email=EMAIL_HOST_USER)
+        send_mail(subject=data['subject'],message=data['body'],recipient_list=[data['email'],],fail_silently=False,from_email=EMAIL_HOST_USER)
 
     @staticmethod
     def email_verifier(user):
@@ -14,7 +14,7 @@ class Util:
         user = User.objects.get(username = user.username)
         sdata = {'body': 'مرحبا بك الدكتور/ة '+ user.first_name + ' ' + user.last_name +' المحترم/ة,\n رمز التفعيل الخاص بك: \n' + user.verify_code,
         'email': user.email, 'subject': 'Verify your email'} #todo
-        return Util.send_email(sdata)
+        Util.send_email(sdata)
 
 def create_code():
     password = ''.join(secrets.choice(string.digits) for i in range(6))
