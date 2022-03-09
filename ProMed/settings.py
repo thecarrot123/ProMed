@@ -149,8 +149,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'alawirmalek@gmail.com'
-EMAIL_HOST_PASSWORD = '#AChEPT4Ang2%'
-#EMAIL_HOST_PASSWORD = 'qexvfbmqootrsluk'
+EMAIL_HOST_PASSWORD = 'qexvfbmqootrsluk'
 
 from os.path import expanduser
 home = expanduser("~")
