@@ -14,7 +14,7 @@ class Util:
         user = User.objects.get(username = user.username)
         sdata = {'body': 'مرحبا بك الدكتور/ة '+ user.first_name + ' ' + user.last_name +' المحترم/ة,\n رمز التفعيل الخاص بك: \n' + user.verify_code,
         'email': user.email, 'subject': 'Verify your email'}
-        print(sdata)
+        print(sdata['email'])
         Util.send_email(sdata)
 
 def create_code():
