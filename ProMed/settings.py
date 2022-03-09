@@ -147,7 +147,7 @@ STATIC_URL = 'static/'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_PORT = 8010
 EMAIL_HOST_USER = 'alawirmalek@gmail.com'
 EMAIL_HOST_PASSWORD = 'qexvfbmqootrsluk'
 
