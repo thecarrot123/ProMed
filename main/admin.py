@@ -17,7 +17,7 @@ class AuthorAdmin(admin.ModelAdmin):
             'fields': ['image','show_image'],
         })
     )
-    readonly_fields = ['total_points','total_income','extracted','left','show_image']
+    readonly_fields = ['total_income','extracted','left','show_image']
     def show_image(self, obj):
         return  mark_safe('<img src="{url}" width="100" height=120/>'.format(url =obj.image.url))
 
