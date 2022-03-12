@@ -11,10 +11,10 @@ class Library(models.Model):
         return str(self.name)
 
 class LibraryTransfer(models.Model):
-    user = models.ForeignKey(User, on_delete = CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete = CASCADE, null=True,verbose_name='المستخدم')
     amount = models.IntegerField("قيمة الحوالة")
     points = models.IntegerField("النقاط",default=0)
-    library = models.ForeignKey(Library,on_delete=CASCADE,null=True)
+    library_id = models.ForeignKey(Library,on_delete=CASCADE,null=True,verbose_name='المكتبة')
     def __str__(self):
         return str(self.user) + ' ' + str(self.amount)
 

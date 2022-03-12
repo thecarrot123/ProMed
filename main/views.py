@@ -32,6 +32,7 @@ def registraion_view(request):
         if serializer.is_valid() and request.data['phone'] != '' and request.data['first_name'] !='' and request.data['last_name']:
             user = serializer.save()
             user.set_password(user.password)
+            user.verified = True
             user.save()
             data['response'] = 'تم تسجيل المستخدم بنجاح.'
             data['email'] = user.email
