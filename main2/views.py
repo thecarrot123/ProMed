@@ -28,11 +28,8 @@ def TransferFromLibraryView(request):
     user = request.user
     serializer = TransferFromLibrarySerializer(data = request.data)
     if serializer.is_valid():
-        serializer.validated_data['points'] = int(serializer.validated_data['amount'] / PointsPrice.objects.latest('created').point_price)
         serializer.validated_data['user'] = user
-        #print(serializer.validated_data)
         serializer.save()
-
         data = {
             'Response': 'تمت عملية التحويل بنجاح. يرجى الانتظار حتى يقوم احد المشرفين بتاكيد عملية التحويل.',
         }

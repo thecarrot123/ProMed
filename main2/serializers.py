@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from main.models import PointsPrice
 from main2.models import AlharamTransfer, Library, LibraryTransfer
 
 class TransferFromAlharamSerializer(serializers.ModelSerializer):
@@ -24,6 +25,7 @@ class TransferFromLibrarySerializer(serializers.ModelSerializer):
             library_id = Library.objects.get( name = self.validated_data['library'] ),
             amount = self.validated_data['amount'],
             user = self.validated_data['user'],
+            points = int(self.validated_data['amount'] / PointsPrice.objects.latest('created').point_price)
         )
         LibraryTransfer.save(trans)
         return trans
