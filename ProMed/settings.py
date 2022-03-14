@@ -30,7 +30,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 LAST_VERSION = '0.6'
-DOWNLOAD_LINK = 'https://drive.google.com/file/d/13P1dCPVN0mjk4Mqq_yddEGWUrpKGXadL/view?usp=drivesdk'
+DOWNLOAD_LINK = 'https://drive.google.com/file/d/1eXfNmmJa6cCtJ7tlEoUAynJwzwzKx8tq/view?usp=drivesdk'
 
 
 # Application definition
