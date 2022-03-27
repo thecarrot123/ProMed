@@ -4,6 +4,11 @@ from main.models import User
 from django.db.models.deletion import CASCADE
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+TRANSFER_STATUS_CHOICES = [
+    ('C', 'Confirmed'),
+    ('U', 'Unconfirmed'),
+]
+
 class Library(models.Model):
     name = models.CharField(max_length=70,default='')
     library_fee = models.IntegerField(default = 0,validators=[MaxValueValidator(100),MinValueValidator(0)])
@@ -15,6 +20,7 @@ class LibraryTransfer(models.Model):
     amount = models.IntegerField("قيمة الحوالة")
     points = models.IntegerField("النقاط",default=0)
     library_id = models.ForeignKey(Library,on_delete=CASCADE,null=True,verbose_name='المكتبة')
+    status = models.CharField(max_length=1,choices=TRANSFER_STATUS_CHOICES,default='U')
     def __str__(self):
         return str(self.user) + ' ' + str(self.amount)
 
@@ -22,6 +28,7 @@ class AlharamTransfer(models.Model):
     user = models.ForeignKey(User, on_delete = CASCADE, null=True)
     amount = models.IntegerField("قيمة الحوالة")
     points = models.IntegerField("النقاط",default=0)
+    status = models.CharField(max_length=1,choices=TRANSFER_STATUS_CHOICES,default='U')
     receipt_number = models.IntegerField("رقم الايصال", unique = True, error_messages={
             'unique': ("تم ارسال رقم هذا الايصال مسبقاً."),
         })
@@ -30,5 +37,8 @@ class AlharamTransfer(models.Model):
 
 class Expanse(models.Model):
     amount = models.IntegerField()
+    title = models.CharField(max_length=50)
     discription  = models.CharField(max_length = 300)
     date = models.DateTimeField(default=timezone.now)
+    def __str__(self):
+        return str(self.title)
