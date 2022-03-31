@@ -1,3 +1,4 @@
+from re import search
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from .models import Lecture, PointsPrice, User, Subject, Author, UserLecture, Video
@@ -21,7 +22,10 @@ class AuthorAdmin(admin.ModelAdmin):
     def show_image(self, obj):
         return  mark_safe('<img src="{url}" width="100" height=120/>'.format(url =obj.image.url))
 
-admin.site.register(User)
+class UserAdmin(admin.ModelAdmin):
+    search_fields = ['username']
+
+admin.site.register(User,UserAdmin)
 admin.site.register(Author,AuthorAdmin)
 admin.site.register(Video)
 admin.site.register(Lecture)
