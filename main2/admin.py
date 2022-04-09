@@ -10,9 +10,15 @@ from main2.models import AlharamTransfer, Library, LibraryTransfer, Expanse
 
 @admin.action(description='Mark selected transfer as confirmed')
 def AlharamConfirm(modeladmin, request, queryset):
+    for obj in queryset:
+        if obj.status == 'U':
+            point_price = PointsPrice.objects.latest('created').point_price
+            obj.user.points = obj.user.points + obj.amount / point_price
+            obj.user.save()
+            
     queryset.update(status = 'C')
 
-@admin.action(description='Mark selected transfer as confirmed')
+@admin.action(description='Mark selected transfers as confirmed')
 def LibraryConfirm(modeladmin, request, queryset):
     for obj in queryset:
         if obj.status == 'U':

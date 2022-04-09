@@ -5,6 +5,7 @@ from ProMed.settings import LAST_VERSION, DOWNLOAD_LINK
 from main.models import Author, Subject, User
 from rest_framework import status, viewsets
 from .serializers import AuthorsSerializer, EmailValidateSerializer, SubjectSerializer, SubjectsNamesSerializer, UserSerializer, VideoSerializer
+from django.contrib.auth.models import update_last_login
 
 
 class SubjectsNamesViewSet(viewsets.ReadOnlyModelViewSet):
@@ -29,6 +30,7 @@ class CostumObtainAuthToken(ObtainAuthToken):
         if user.verified == False:
             return Response({'unverified user': 'الرجاء تاكيد البريد الاكتروني اولاً.','username': user.username},status=status.HTTP_401_UNAUTHORIZED)
         token, created = Token.objects.get_or_create(user=user)
+        update_last_login(None, user)
         return Response({'access': token.key,'username': user.username,'points': user.points})
 
 class EmailValidateView(viewsets.ReadOnlyModelViewSet):

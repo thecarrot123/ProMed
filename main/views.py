@@ -86,7 +86,7 @@ def ForgotPasswordView(request):
             user = User.objects.get(Q(username__iexact = serializer.validated_data['username']) |
              Q(email__iexact = serializer.validated_data['username']))
             data = {'email': user.email}
-            Util.email_verifier(user)
+            #Util.email_verifier(user)
             return Response(data,status=status.HTTP_200_OK)
         data = {
             'Response': 'Wrong email'
@@ -107,7 +107,6 @@ def ResetPasswordView(request):
                 return Response(data,status=status.HTTP_400_BAD_REQUEST)
             refresh = RefreshToken.for_user(user)
             user.set_password(serializer.validated_data['password'])
-            print(serializer.validated_data['password'])
             user.save()
             data = {
                 'Response': 'تم تغيير كلمة السر بنجاح',

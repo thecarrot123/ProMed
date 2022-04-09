@@ -23,6 +23,14 @@ class AuthorAdmin(admin.ModelAdmin):
         return  mark_safe('<img src="{url}" width="100" height=120/>'.format(url =obj.image.url))
 
 class UserAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('معلومات المستخدم', {
+            'fields': ['username','first_name','last_name','email','password','date_joined','last_login'],
+        }),
+        ('معلومات الحساب', {
+            'fields': ['points','verify_code','verified'],
+        })
+    )
     search_fields = ['username']
 
 admin.site.register(User,UserAdmin)
