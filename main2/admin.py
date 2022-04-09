@@ -29,8 +29,8 @@ def LibraryConfirm(modeladmin, request, queryset):
                 discription = "ضريبة تحويل لمكتبة <" + str(obj.library_id) + "> بمقدار " + str((obj.amount / point_price) * obj.library_id.library_fee / 100),
                 )
             expanse.save()
-            #obj.user.points = obj.user.points + obj.amount / point_price
-            #obj.user.save()
+            obj.user.points = obj.user.points + obj.amount / point_price
+            obj.user.save()
             
     queryset.update(status = 'C')
 
