@@ -25,7 +25,7 @@ class AuthorAdmin(admin.ModelAdmin):
 class UserAdmin(admin.ModelAdmin):
     fieldsets = (
         ('معلومات المستخدم', {
-            'fields': ['username','first_name','last_name','email','password','date_joined','last_login'],
+            'fields': ['username','first_name','last_name','email','password','phone','date_joined','last_login'],
         }),
         ('معلومات الحساب', {
             'fields': ['points','verify_code','verified'],
