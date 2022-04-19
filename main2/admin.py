@@ -51,7 +51,6 @@ class LibraryTransferAdmin(admin.ModelAdmin):
     list_display = ['user', 'amount', 'status']
     actions = [LibraryConfirm]
 
-
 @admin.action(description='Mark selcted expanses as paid')
 def ExpansePay(modeladmin, request, queryset):
     for obj in queryset:
