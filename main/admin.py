@@ -33,10 +33,16 @@ class UserAdmin(admin.ModelAdmin):
     )
     search_fields = ['username']
 
+class LectureAdmin(admin.ModelAdmin):
+    search_fields = ['name','code_name']
+
+class UserLectureAdmin(admin.ModelAdmin):
+    autocomplete_fields = ["user","lecture"]
+
 admin.site.register(User,UserAdmin)
 admin.site.register(Author,AuthorAdmin)
 admin.site.register(Video)
-admin.site.register(Lecture)
+admin.site.register(Lecture,LectureAdmin)
 admin.site.register(Subject,SubjectAdmin)
-admin.site.register(UserLecture)
+admin.site.register(UserLecture,UserLectureAdmin)
 admin.site.register(PointsPrice)
