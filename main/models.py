@@ -6,10 +6,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
-# class Record(models.Model):
-#     total_points = models.IntegerField()
-#     total_income = models.IntegerField()
-#     total_expanses = models.IntegerField()
 
 class Author(models.Model):
     def validate_image(fieldfile_obj):

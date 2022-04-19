@@ -6,9 +6,9 @@ from main.models import PointsPrice
 from django.urls import reverse
 from django.utils.html import format_html
 
-from main2.models import AlharamTransfer, Library, LibraryTransfer, Expanse
+from main2.models import AlharamTransfer, Library, LibraryTransfer, Expanse, Record
 
-@admin.action(description='Mark selected transfer as confirmed')
+@admin.action(description='Confirm selected transfers')
 def AlharamConfirm(modeladmin, request, queryset):
     for obj in queryset:
         if obj.status == 'U':
@@ -18,7 +18,7 @@ def AlharamConfirm(modeladmin, request, queryset):
             
     queryset.update(status = 'C')
 
-@admin.action(description='Mark selected transfers as confirmed')
+@admin.action(description='Confirm selected transfers')
 def LibraryConfirm(modeladmin, request, queryset):
     for obj in queryset:
         if obj.status == 'U':
@@ -51,14 +51,38 @@ class LibraryTransferAdmin(admin.ModelAdmin):
     list_display = ['user', 'amount', 'status']
     actions = [LibraryConfirm]
 
+
+@admin.action(description='Mark selcted expanses as paid')
+def ExpansePay(modeladmin, request, queryset):
+    for obj in queryset:
+        if obj.paid == 'U':
+            rec = Record.objects.last()
+            rec.total_paid_expanses = rec.total_paid_expanses + obj.amount
+            rec.save()
+            obj.paid = 'P'
+            obj.save()
+
+@admin.action(description='Mark selcted expanses as confirmed')
+def ExpanseConfirm(modeladmin, request, queryset):
+    for obj in queryset:
+        if obj.status == 'U':
+            rec = Record.objects.last()
+            rec.total_expanses = rec.total_expanses + obj.amount
+            rec.save()
+            obj.status = 'C'
+            obj.save()
+
+
 class ExpanseAdmin(admin.ModelAdmin):
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'100'})},
         models.IntegerField: {'widget': TextInput(attrs={'size':'20'})},
     }
-    list_display = ['title','amount']
+    list_display = ['title','amount','paid','status']
+    actions = [ExpansePay,ExpanseConfirm]
 
 admin.site.register(AlharamTransfer,AlharamTransferAdmin)
 admin.site.register(LibraryTransfer,LibraryTransferAdmin)
 admin.site.register(Library)
 admin.site.register(Expanse,ExpanseAdmin)
+admin.site.register(Record)

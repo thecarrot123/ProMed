@@ -9,6 +9,11 @@ TRANSFER_STATUS_CHOICES = [
     ('U', 'Unconfirmed'),
 ]
 
+EXPANSES_PAYMENT_CHOICES = [
+    ('P', 'Paid'),
+    ('U', 'Unpaid'),
+]
+
 class Library(models.Model):
     name = models.CharField(max_length=70,default='')
     library_fee = models.IntegerField(default = 0,validators=[MaxValueValidator(100),MinValueValidator(0)])
@@ -40,5 +45,14 @@ class Expanse(models.Model):
     title = models.CharField(max_length=50)
     discription  = models.CharField(max_length = 300)
     date = models.DateTimeField(default=timezone.now)
+    paid = models.CharField(max_length=1,choices=EXPANSES_PAYMENT_CHOICES,default='U')
+    status = models.CharField(max_length=1,choices=TRANSFER_STATUS_CHOICES,default='U')
     def __str__(self):
         return str(self.title)
+
+class Record(models.Model):
+    name = models.CharField(max_length=7, default='record', unique=True)
+    total_points = models.IntegerField(default=0)
+    total_income = models.IntegerField(default=0)
+    total_expanses = models.IntegerField(default=0)
+    total_paid_expanses = models.IntegerField(default=0)
