@@ -82,7 +82,7 @@ class ExpanseAdmin(admin.ModelAdmin):
         models.CharField: {'widget': TextInput(attrs={'size':'100'})},
         models.IntegerField: {'widget': TextInput(attrs={'size':'20'})},
     }
-    list_display = ['title','amount','paid','status']
+    list_display = ['title','amount','status','paid']
     actions = [ExpansePay,ExpanseConfirm]
 
 admin.site.register(AlharamTransfer,AlharamTransferAdmin)
