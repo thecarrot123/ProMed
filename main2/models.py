@@ -56,3 +56,5 @@ class Record(models.Model):
     total_income = models.IntegerField(default=0)
     total_expanses = models.IntegerField(default=0)
     total_paid_expanses = models.IntegerField(default=0)
+    def __str__(self):
+        return str(self.name)

@@ -1,10 +1,7 @@
-from pydoc import describe
 from django.contrib import admin
-from django.forms import TextInput, Textarea
+from django.forms import TextInput
 from django.db import models
 from main.models import PointsPrice
-from django.urls import reverse
-from django.utils.html import format_html
 
 from main2.models import AlharamTransfer, Library, LibraryTransfer, Expanse, Record
 
@@ -15,7 +12,10 @@ def AlharamConfirm(modeladmin, request, queryset):
             point_price = PointsPrice.objects.latest('created').point_price
             obj.user.points = obj.user.points + obj.amount / point_price
             obj.user.save()
-            
+            rec = Record.objects.last()
+            rec.total_income = rec.total_income + obj.amount
+            rec.total_points = rec.total_points + obj.points
+            rec.save()
     queryset.update(status = 'C')
 
 @admin.action(description='Confirm selected transfers')
@@ -27,11 +27,16 @@ def LibraryConfirm(modeladmin, request, queryset):
                 amount = (obj.amount / point_price) * obj.library_id.library_fee / 100,
                 title = "ضريبة تحويل عم طريق مكتبة",
                 discription = "ضريبة تحويل لمكتبة <" + str(obj.library_id) + "> بمقدار " + str((obj.amount / point_price) * obj.library_id.library_fee / 100),
+                status = 'C',
                 )
             expanse.save()
             obj.user.points = obj.user.points + obj.amount / point_price
             obj.user.save()
-            
+            rec = Record.objects.last()
+            rec.total_expanses = rec.total_expanses + expanse.amount
+            rec.total_income = rec.total_income + obj.amount
+            rec.total_points = rec.total_points + obj.points
+            rec.save()
     queryset.update(status = 'C')
 
 class AlharamTransferAdmin(admin.ModelAdmin):
