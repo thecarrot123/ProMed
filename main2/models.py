@@ -17,6 +17,7 @@ EXPANSES_PAYMENT_CHOICES = [
 class Library(models.Model):
     name = models.CharField(max_length=70,default='')
     library_fee = models.IntegerField(default = 0,validators=[MaxValueValidator(100),MinValueValidator(0)])
+    total_profit = models.IntegerField(default = 0)
     def __str__(self):
         return str(self.name)
 

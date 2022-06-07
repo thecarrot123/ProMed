@@ -37,6 +37,9 @@ def LibraryConfirm(modeladmin, request, queryset):
             rec.total_income = rec.total_income + obj.amount
             rec.total_points = rec.total_points + obj.points
             rec.save()
+            lib = obj.library_id
+            lib.total_profit = lib.total_profit + obj.amount - expanse.amount
+            lib.save()
     queryset.update(status = 'C')
 
 class AlharamTransferAdmin(admin.ModelAdmin):
