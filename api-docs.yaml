@@ -1,0 +1,243 @@
+openapi: 3.0.0
+info:
+  title: ProMed APIs
+  version: '0.6'
+
+paths:
+  /main/login:
+    post:
+      tags:
+      - auth
+      summary: login
+      description: login with username or email
+      operationId: login
+      parameters:
+        - in: header
+          name: Accept
+          schema: 
+            type: string
+            example: application/json; version=0.6
+          required: true
+      requestBody: 
+        content:
+          application/json:
+            encoding: {}
+            schema:
+              required:
+              - email
+              - password
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: jazra1
+                password:
+                  type: string
+                  example: 1234abcd
+      responses:
+        '200':
+          description: 'Ok'
+          content:
+            application/json:
+              schema:
+                required:
+                  - username
+                  - access
+                  - points
+                type: object
+                properties:
+                  username:
+                    type: string
+                    example: my_name
+                  access:
+                    type: string
+                    example: 1231ab5a564c
+                  points:
+                    type: integer
+                    example: 5000
+        '400':
+          description: 'Bad Request: wrong username or password'
+          content:
+            application/json:
+              schema:
+                required:
+                  - non_field_errors
+                type: object
+                properties:
+                  non_field_errors:
+                    type: array
+                    example: [your-info-is-wrong]
+        '406':
+          description: 'Not Acceptable: old version'
+          content:
+            application/json:
+              schema:
+                required:
+                  - version
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: "download the newest version through this link"
+  /main/registration:
+    post:
+      tags:
+      - auth
+      summary: registration
+      description: register new user
+      operationId: registration
+      parameters:
+        - in: header
+          name: Accept
+          schema: 
+            type: string
+            example: application/json; version=0.6
+          required: true
+      requestBody: 
+        content:
+          application/json:
+            encoding: {}
+            schema:
+              required:
+              - email
+              - username
+              - first_name
+              - last_name
+              - password
+              - password2
+              - phone
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: jazra1@gmail.com
+                username:
+                  type: string
+                  example: jazra1
+                first_name:
+                  type: string
+                  example: jazra
+                last_name:
+                  type: string
+                  example: 1
+                password:
+                  type: string
+                  example: 1234abcd
+                password2:
+                  type: string
+                  example: 1234abcd
+                phone:
+                  type: string
+                  example: +963932959595
+      responses:
+        '201':
+          description: 'Created'
+          content:
+            application/json:
+              schema:
+                required:
+                  - response
+                  - email
+                  - username
+                type: object
+                properties:
+                  reponse:
+                    type: string
+                    example: user created successfully
+                  email:
+                    type: string
+                    example: jazra1@gmail.com
+                  username:
+                    type: string
+                    example: jazra1
+        '400':
+          description: "Bad Request: there already exist a user with same field
+            that should be unique"
+          content:
+            application/json:
+              schema:
+                required:
+                  - field_name
+                type: object
+                properties:
+                  field_name:
+                    type: array
+                    example: [already exists]
+        '406':
+          description: 'Not Acceptable: old version'
+          content:
+            application/json:
+              schema:
+                required:
+                  - version
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: "download the newest version through this link"
+
+  /main/forgot_password:
+    post:
+      tags:
+      - auth
+      summary: forgot password
+      description: takes the email or username to reset it's password by sending email 
+      operationId: forgot_password
+      parameters:
+        - in: header
+          name: Accept
+          schema: 
+            type: string
+            example: application/json; version=0.6
+          required: true
+      requestBody: 
+        content:
+          application/json:
+            encoding: {}
+            schema:
+              required:
+              - username
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: jazra1@gmail.com
+      responses:
+        '200':
+          description: 'Ok'
+          content:
+            application/json:
+              schema:
+                required:
+                  - email
+                type: object
+                properties:
+                  email:
+                    type: string
+                    example: jazra1@gmail.com
+        '400':
+          description: 'Bad Request: wrong username or email'
+          content:
+            application/json:
+              schema:
+                required:
+                  - response
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: "wrong username"
+        '406':
+          description: 'Not Acceptable: old version'
+          content:
+            application/json:
+              schema:
+                required:
+                  - version
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: "download the newest version through this link"
+        
+

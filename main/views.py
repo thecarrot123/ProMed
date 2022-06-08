@@ -81,6 +81,8 @@ def verify_email(request):
 @api_view(['POST',])
 def ForgotPasswordView(request):
     if request.method == 'POST':
+        if request.version != LAST_VERSION:
+            return Response({'version': 'الرجاء تحديث التطبيق من هذا الرابط:/n' + DOWNLOAD_LINK + '\n ثم اعادة المحاولة.'},status=status.HTTP_406_NOT_ACCEPTABLE)
         serializer = ForgotPasswordSerializer(data = request.data)
         if serializer.is_valid():
             user = User.objects.get(Q(username__iexact = serializer.validated_data['username']) |
@@ -89,7 +91,7 @@ def ForgotPasswordView(request):
             #Util.email_verifier(user)
             return Response(data,status=status.HTTP_200_OK)
         data = {
-            'Response': 'Wrong email'
+            'response': 'wrong username'
         }
         return Response(data,status=status.HTTP_400_BAD_REQUEST)
 
@@ -97,6 +99,8 @@ def ForgotPasswordView(request):
 @api_view(['POST',])
 def ResetPasswordView(request):
     if request.method == 'POST':
+        if request.version != LAST_VERSION:
+            return Response({'version': 'الرجاء تحديث التطبيق من هذا الرابط:/n' + DOWNLOAD_LINK + '\n ثم اعادة المحاولة.'},status=status.HTTP_406_NOT_ACCEPTABLE)
         serializer = ResetPasswrodSerializer(data = request.data)
         if serializer.is_valid():
             user = User.objects.get(email = serializer.validated_data['email'])
