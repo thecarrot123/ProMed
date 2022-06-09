@@ -1,14 +1,13 @@
 from base64 import b64encode
 from django.utils import timezone
 from main.models import Author, Lecture, Subject, User, UserLecture, Video
-from .utils import Util
 from rest_framework.permissions import IsAuthenticated
 from main.serializers import EmailValidateSerializer, ForgotPasswordSerializer, RegistrationSerializer, ResetPasswrodSerializer, VideoSerializer
 from main.utils import create_code
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.authtoken.models import Token
 from django.db.models import Q
 from datetime import timedelta
 from ProMed.settings import DOWNLOAD_LINK, LAST_VERSION
@@ -52,29 +51,22 @@ def registraion_view(request):
 
 @api_view(['POST',])
 def verify_email(request):
+    if request.version != LAST_VERSION:
+        return Response({'version': 'الرجاء تحديث التطبيق من هذا الرابط:/n' + DOWNLOAD_LINK + '\n ثم اعادة المحاولة.'},status=status.HTTP_406_NOT_ACCEPTABLE)
     if request.method == 'POST':
         serializer = EmailValidateSerializer(data = request.data)
         if serializer.is_valid():
             user = User.objects.get(username = serializer.validated_data['username'])
-            if user.verify_code == serializer.validated_data['verify_code']:
-                User.objects.filter(username = user.username).update(verified = True)
-                User.objects.filter(username = user.username).update(verify_code = create_code())
-                tok = RefreshToken.for_user(user)
-                data = {
-                    'response': 'Accepted Code',
-                    'refresh': str(tok),
-                    'access': str(tok.access_token),
-                    'points': user.points
-                }
-                return Response(data,status=status.HTTP_202_ACCEPTED)
+            User.objects.filter(username = user.username).update(verified = True)
+            User.objects.filter(username = user.username).update(verify_code = create_code())
+            token = Token.Objects.get_or_create(user=user)
             data = {
-                'response': 'الرمز غير صحيح.',
+                'response': 'Accepted Code',
+                'access': str(token),
+                'points': user.points
             }
-            return Response(data,status=status.HTTP_406_NOT_ACCEPTABLE)
-        data = {
-            'resopnse': 'Invalid data',
-        }
-        return Response(data,status=status.HTTP_406_NOT_ACCEPTABLE)
+            return Response(data,status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -90,32 +82,22 @@ def ForgotPasswordView(request):
             data = {'email': user.email}
             #Util.email_verifier(user)
             return Response(data,status=status.HTTP_200_OK)
-        data = {
-            'response': 'wrong username'
-        }
-        return Response(data,status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
+# todo: change the code after each attempt.
 @api_view(['POST',])
 def ResetPasswordView(request):
+    if request.version != LAST_VERSION:
+        return Response({'version': 'الرجاء تحديث التطبيق من هذا الرابط:/n' + DOWNLOAD_LINK + '\n ثم اعادة المحاولة.'},status=status.HTTP_406_NOT_ACCEPTABLE)
     if request.method == 'POST':
-        if request.version != LAST_VERSION:
-            return Response({'version': 'الرجاء تحديث التطبيق من هذا الرابط:/n' + DOWNLOAD_LINK + '\n ثم اعادة المحاولة.'},status=status.HTTP_406_NOT_ACCEPTABLE)
         serializer = ResetPasswrodSerializer(data = request.data)
         if serializer.is_valid():
             user = User.objects.get(email = serializer.validated_data['email'])
-            if user.verify_code != serializer.validated_data['verify_code']:
-                data = {
-                    'Response': 'الرمز غير صحيح.'
-                }
-                return Response(data,status=status.HTTP_400_BAD_REQUEST)
-            refresh = RefreshToken.for_user(user)
             user.set_password(serializer.validated_data['password'])
             user.save()
             data = {
-                'Response': 'تم تغيير كلمة السر بنجاح',
-                'access': str(refresh.access_token),
-                'refresh': str(refresh),
+                'response': 'تم تغيير كلمة السر بنجاح',
             }
             return Response(data,status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
@@ -205,6 +187,8 @@ def PurchaseLectureView(request):
 @api_view(['GET',])
 @permission_classes([IsAuthenticated])
 def GetPoints(request):
+    if request.version != LAST_VERSION:
+        return Response({'version': 'الرجاء تحديث التطبيق من هذا الرابط:/n' + DOWNLOAD_LINK + '\n ثم اعادة المحاولة.'},status=status.HTTP_406_NOT_ACCEPTABLE)
     user = request.user
     data = {
         'points': user.points,

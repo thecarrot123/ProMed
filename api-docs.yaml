@@ -162,7 +162,83 @@ paths:
                 properties:
                   field_name:
                     type: array
-                    example: [already exists]
+                    example: ["the error in this field"]
+        '406':
+          description: 'Not Acceptable: old version'
+          content:
+            application/json:
+              schema:
+                required:
+                  - version
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: "download the newest version through this link"
+
+  /main/verify_email:
+    post:
+      tags:
+      - auth
+      summary: verify email
+      description: verify email
+      operationId: verify_email
+      parameters:
+        - in: header
+          name: Accept
+          schema: 
+            type: string
+            example: application/json; version=0.6
+          required: true
+      requestBody: 
+        content:
+          application/json:
+            encoding: {}
+            schema:
+              required:
+              - email
+              - verify_code
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: jazra1@gmail.com
+                verify_code:
+                  type: string
+                  example: 123456
+      responses:
+        '200':
+          description: 'Ok'
+          content:
+            application/json:
+              schema:
+                required:
+                - response
+                - access
+                - points
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: okay
+                  access:
+                    type: string
+                    example: 123ac56413f
+                  points:
+                    type: integer
+                    example: 5000
+        '400':
+          description: 'Bad Request: wrong username or email'
+          content:
+            application/json:
+              schema:
+                required:
+                  - field_name
+                type: object
+                properties:
+                  field_name:
+                    type: array
+                    example: ["the error in this field"]
         '406':
           description: 'Not Acceptable: old version'
           content:
@@ -221,12 +297,12 @@ paths:
             application/json:
               schema:
                 required:
-                  - response
+                  - field_name
                 type: object
                 properties:
-                  response:
-                    type: string
-                    example: "wrong username"
+                  field_name:
+                    type: array
+                    example: ["the error in this field"]
         '406':
           description: 'Not Acceptable: old version'
           content:
@@ -239,5 +315,138 @@ paths:
                   version:
                     type: string
                     example: "download the newest version through this link"
-        
+
+  /main/reset_password:
+    post:
+      tags:
+      - auth
+      summary: reset password
+      description: reset the password after checking the verify code and new password
+      operationId: reset_password
+      parameters:
+        - in: header
+          name: Accept
+          schema: 
+            type: string
+            example: application/json; version=0.6
+          required: true
+      requestBody: 
+        content:
+          application/json:
+            encoding: {}
+            schema:
+              required:
+              - email
+              - verify_code
+              - password
+              - password2
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: jazra1@gmail.com
+                verify_code:
+                  type: string
+                  example: 123456
+                password:
+                  type: string
+                  example: 1234abcd
+                password2:
+                  type: string
+                  example: 1234abcd
+      responses:
+        '200':
+          description: 'Ok'
+          content:
+            application/json:
+              schema:
+                required:
+                  - response
+                type: object
+                properties:
+                  response:
+                    type: string
+                    example: okay
+        '400':
+          description: 'Bad Request: wrong verify_code, email, or password'
+          content:
+            application/json:
+              schema:
+                required:
+                  - field_name
+                type: object
+                properties:
+                  field_name:
+                    type: array
+                    example: ["the error in this field"]
+        '406':
+          description: 'Not Acceptable: old version'
+          content:
+            application/json:
+              schema:
+                required:
+                  - version
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: "download the newest version through this link"
+  
+  /main/points:
+    get:
+      tags:
+      - user data
+      summary: get user points
+      description: get user points
+      operationId: points
+      parameters:
+        - in: header
+          name: Accept
+          schema: 
+            type: string
+            example: application/json; version=0.6
+          required: true
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+            example: Token 8ca4ec09ad4f327db6dc2c2820977e3d58931e04
+          required: true
+      responses:
+        '200':
+          description: 'Ok'
+          content:
+            application/json:
+              schema:
+                required:
+                - points
+                type: object
+                properties:
+                  points:
+                    type: integer
+                    example: 5000
+        '401':
+          description: 'Unauthorized: token is wrong or expired.'
+          content:
+            application/json:
+              schema:
+                required:
+                  - detail
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: "invalid token"
+        '406':
+          description: 'Not Acceptable: old version'
+          content:
+            application/json:
+              schema:
+                required:
+                  - version
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: "download the newest version through this link"
 

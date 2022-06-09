@@ -12,16 +12,17 @@ router.register('authors',AuthorsViewSet)
 
 urlpatterns = [
     path('',include(router.urls)),
+    path('login/', CostumObtainAuthToken.as_view(), name='login'),
     path('registration/' ,registraion_view, name = 'registration'),
     path('verify_email/', verify_email, name='verify_email'),
-    path('login/', CostumObtainAuthToken.as_view(), name='login'),
-    path('lecture/',LectureView),
     path('forgot_password/',ForgotPasswordView),
     path('reset_password/',ResetPasswordView),
+    path('points/',GetPoints),
+    
+    path('lecture/',LectureView),
     path('lectures/',LecturesView),
     path('video/',VideoView),
     path('purchase_lecture/',PurchaseLectureView),
-    path('points/',GetPoints),
     path('share/',ShareAapp),
     path('details/',VideoDetails),
     path('video_embed_html_page/<int:id>/',VideoEmbedHtmlPage),

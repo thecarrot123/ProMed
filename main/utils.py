@@ -19,8 +19,10 @@ class Util:
         }
         Util.send_email(sdata)
 
+VERIFY_CODE_LENGTH = 6
+
 def create_code():
-    password = ''.join(secrets.choice(string.digits) for i in range(6))
+    password = ''.join(secrets.choice(string.digits) for i in range(VERIFY_CODE_LENGTH))
     return password
 
 def strong_password(password):
